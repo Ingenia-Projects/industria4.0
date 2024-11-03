@@ -1,7 +1,7 @@
 // models/Subareas.js
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Areas = require('./Areas');
 
 const Subareas = sequelize.define(
   'Subareas',
@@ -13,11 +13,11 @@ const Subareas = sequelize.define(
     },
     area_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
-        model: Areas,
+        model: 'areas', // Usamos el nombre de la tabla directamente
         key: 'id',
       },
-      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
@@ -29,9 +29,5 @@ const Subareas = sequelize.define(
     timestamps: false,
   }
 );
-
-// Relaciones
-Subareas.belongsTo(Areas, { foreignKey: 'area_id' });
-Areas.hasMany(Subareas, { foreignKey: 'area_id' });
 
 module.exports = Subareas;

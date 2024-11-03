@@ -5,39 +5,31 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import PrivateRoute from './components/PrivateRoute';
 import MainLayout from './layouts/MainLayout/MainLayout';
 
-const LoginPage = lazy(() => import('./features/Auth/pages/LoginPage'));
-const HomePage = lazy(() => import('./pages/HomePage'));
-const EvaluacionPage = lazy(() => import('./pages/EvaluacionPage'));
-const RoadmapPage = lazy(() => import('./pages/RoadmapPage'));
-const ReportePage = lazy(() => import('./pages/ReportePage'));
-
 function App() {
   return (
     <Router>
       <Suspense fallback={<div>Cargando...</div>}>
         <Routes>
           {/* Ruta de Login */}
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LazyLoginPage />} />
 
-          {/* Ruta protegida para HomePage */}
+          {/* Rutas protegidas */}
           <Route
             path="/"
             element={
               <PrivateRoute>
                 <MainLayout>
-                  <HomePage />
+                  <LazyHomePage />
                 </MainLayout>
               </PrivateRoute>
             }
           />
-
-          {/* Rutas para Evaluación, Roadmap y Reporte */}
           <Route
             path="/evaluacion"
             element={
               <PrivateRoute>
                 <MainLayout>
-                  <EvaluacionPage />
+                  <LazyEvaluacionPage />
                 </MainLayout>
               </PrivateRoute>
             }
@@ -47,7 +39,7 @@ function App() {
             element={
               <PrivateRoute>
                 <MainLayout>
-                  <RoadmapPage />
+                  <LazyRoadmapPage />
                 </MainLayout>
               </PrivateRoute>
             }
@@ -57,18 +49,36 @@ function App() {
             element={
               <PrivateRoute>
                 <MainLayout>
-                  <ReportePage />
+                  <LazyReportePage />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/curso"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <LazyCursoPage />
                 </MainLayout>
               </PrivateRoute>
             }
           />
 
-          {/* Redirección en caso de rutas no definidas */}
+          {/* Redirección para rutas no definidas */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
     </Router>
   );
 }
+
+// Definición de componentes perezosos fuera del componente principal para mejorar la legibilidad
+const LazyLoginPage = lazy(() => import('./features/Auth/pages/LoginPage'));
+const LazyHomePage = lazy(() => import('./pages/HomePage'));
+const LazyEvaluacionPage = lazy(() => import('./pages/EvaluacionPage'));
+const LazyRoadmapPage = lazy(() => import('./pages/RoadmapPage'));
+const LazyReportePage = lazy(() => import('./pages/ReportePage'));
+const LazyCursoPage = lazy(() => import('./pages/CursoPage')); // Asegúrate de tener esta página
 
 export default App;
