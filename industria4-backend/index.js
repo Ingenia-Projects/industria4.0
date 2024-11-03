@@ -17,10 +17,10 @@ sequelize
     console.error('❌ Error al conectar a la base de datos:', err.message);
   });
 
-app.use(cors({
-  origin: 'http://localhost:3000', // Ajusta esto según tu configuración
-  credentials: true,
-}));
+  app.use(cors({
+    origin: '*', // Permite todas las IPs (solo para desarrollo)
+  }));
+  ;
 app.use(express.json());
 
 app.use('/api', routes);
